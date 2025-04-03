@@ -23,6 +23,8 @@ Size: 17,000 X-ray images (13,000 train, 4,000 test).
 
 Features: Grayscale X-ray images labeled as fractured or non-fractured.
 
+Bone Fracture Dataset (https://stummuac-my.sharepoint.com/:f:/g/personal/23637839_stu_mmu_ac_uk/EhGn0rLprl9HqnFdlp08Lg0BuhRgMGUcuy-khSqV6HoN5w?e=v78mwb)
+
 Challenges: Variable resolutions (500–600 pixels), requiring preprocessing.
 
 
