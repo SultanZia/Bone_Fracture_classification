@@ -81,30 +81,24 @@ Performance: High specificity and sensitivity confirmed robust fracture detectio
 
 
 **Results**
+
 Custom CNN: 99% accuracy with a tailored architecture.
-
 VGG16: 99% accuracy in fewer epochs, leveraging pre-trained features.
-
 Visualizations: Accuracy/loss curves and confusion matrices included in the notebook.
 
 
 **Skills Demonstrated**
 
 Deep Learning: Built and fine-tuned CNN and VGG16 models for image classification.
-
 Image Preprocessing: Resized and augmented X-ray images for deep learning.
-
 Model Optimization: Used regularization, early stopping, and transfer learning.
-
 Tools: Python, TensorFlow, Keras, Matplotlib, Seaborn.
 
 
 **Future Enhancements**
 
 Experiment with hybrid CNN-VGG16 architectures.
-
 Incorporate additional imaging modalities (e.g., CT scans).
-
 Explore advanced models like ResNet50 or YOLO.
 
 Author
