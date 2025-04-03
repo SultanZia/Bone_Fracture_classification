@@ -14,7 +14,9 @@ Compare a custom CNN with the VGG16 model for performance and efficiency.
 
 Leverage preprocessing and deep learning to enhance classification accuracy.
 
+
 **Dataset**
+
 Source: Bone Fracture dataset from Kaggle.
 
 Size: 17,000 X-ray images (13,000 train, 4,000 test).
@@ -23,9 +25,10 @@ Features: Grayscale X-ray images labeled as fractured or non-fractured.
 
 Challenges: Variable resolutions (500–600 pixels), requiring preprocessing.
 
+
 **Methodology**
 
-1. Data Preprocessing
+1. **Data Preprocessing**
    
 Converted images to grayscale for computational efficiency.
 
@@ -34,7 +37,7 @@ Resized images to 224x224x3 pixels using Keras ImageDataGenerator.
 Applied augmentation (e.g., scaling, rotation) to improve model generalization.
 
 
-**Custom CNN Model**
+2.**Custom CNN Model**
 
 Designed with Keras Sequential API for binary classification:
 
@@ -50,7 +53,7 @@ Dense layers (256, 128 neurons) and a final sigmoid layer.
 
 Compiled with Adam optimizer, binary cross-entropy loss, and early stopping (patience=5)
 
-**VGG16 Model**
+3.**VGG16 Model**
 
 Fine-tuned pre-trained VGG16 (ImageNet weights):
 
@@ -60,11 +63,13 @@ Used Adam optimizer, binary cross-entropy loss, and early stopping (patience=3).
 
 Saved best weights with ModelCheckpoint
 
-Evaluation
+
+**Evaluation**
 
 Metrics: Accuracy, F1-score, specificity, sensitivity, confusion matrix.
 
 Training: 10 epochs (CNN), 3 epochs (VGG16), batch size of 32.
+
 
 **Key Insights**
 
@@ -73,6 +78,7 @@ Accuracy: Both models achieved 92% test accuracy and an F1-score of 0.928.
 Efficiency: VGG16 converged in 3 epochs vs. 10 for the custom CNN, showcasing transfer learning’s advantage.
 
 Performance: High specificity and sensitivity confirmed robust fracture detection, supported by confusion matrix analysis.
+
 
 **Results**
 Custom CNN: 99% accuracy with a tailored architecture.
@@ -91,6 +97,7 @@ Image Preprocessing: Resized and augmented X-ray images for deep learning.
 Model Optimization: Used regularization, early stopping, and transfer learning.
 
 Tools: Python, TensorFlow, Keras, Matplotlib, Seaborn.
+
 
 **Future Enhancements**
 
