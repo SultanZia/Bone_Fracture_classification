@@ -1,115 +1,123 @@
-# Bone_Fracture_classification
-Bone Fracture Classification with CNN and VGG16
+# Bone Fracture Detection from X-ray Images
 
-**Overview**
+**Deep Learning Assessment — MSc Data Science, Manchester Metropolitan University**
 
-This deep learning project classifies bone fractures in radiology X-ray images to improve diagnostic accuracy in orthopedics. Using a Kaggle dataset of 17,000 images, I developed a custom Convolutional Neural Network (CNN) and fine-tuned the pre-trained VGG16 model, achieving 92% accuracy and an F1-score of 0.928. This work highlights my skills in medical image analysis, deep learning, and model optimization using Python and Keras
+Binary classification of X-ray images into **Fractured** / **Not Fractured** using a custom CNN and VGG16 transfer learning, with Grad-CAM visualisation for clinical interpretability.
 
+---
 
-**Objectives**
+## Key Results
 
-Detect and classify fractured vs. non-fractured bones in X-ray images.
+| Model | Test Accuracy | Test AUC | Epochs |
+|-------|--------------|----------|--------|
+| Custom CNN | **99%** | 0.992 | 10 |
+| VGG16 (Transfer Learning) | **99%** | 0.993 | 3 |
 
-Compare a custom CNN with the VGG16 model for performance and efficiency.
+**Key finding:** VGG16 achieves equivalent accuracy in 3 epochs vs 10 for the custom CNN, demonstrating the efficiency of transfer learning. Grad-CAM heatmaps confirm both models focus on anatomically relevant bone regions when predicting fractures.
 
-Leverage preprocessing and deep learning to enhance classification accuracy.
+---
 
+## Dataset
 
-**Dataset**
+**Bone Fracture Detection Dataset** — Kaggle  
+🔗 [https://www.kaggle.com/datasets/pkdarabi/bone-fracture-detection-computer-vision-project](https://www.kaggle.com/datasets/pkdarabi/bone-fracture-detection-computer-vision-project)
 
-Source: Bone Fracture dataset from Kaggle.
+| Split | Images |
+|-------|--------|
+| Train | 13,000 |
+| Test  | 4,000  |
+| **Total** | **17,000** |
 
-Size: 17,000 X-ray images (13,000 train, 4,000 test).
+**Classes:** Fractured · Not Fractured  
+**Image type:** X-ray radiographs (resized to 224×224)
 
-Features: Grayscale X-ray images labeled as fractured or non-fractured.
+---
 
-Bone Fracture Dataset (https://stummuac-my.sharepoint.com/:f:/g/personal/23637839_stu_mmu_ac_uk/EhGn0rLprl9HqnFdlp08Lg0BuhRgMGUcuy-khSqV6HoN5w?e=v78mwb)
+## Methodology
 
-Challenges: Variable resolutions (500–600 pixels), requiring preprocessing.
+### Custom CNN
+- 3 convolutional blocks: Conv2D → BatchNormalization → MaxPool2D → Dropout(0.3)
+- Filters: 32 → 64 → 128
+- Classification head: Dense(256) → Dropout → Dense(128) → Dropout → Dense(1, sigmoid)
+- Loss: Binary cross-entropy | Optimiser: Adam
+- Callbacks: EarlyStopping (patience=5), ModelCheckpoint
 
+### VGG16 Transfer Learning
+- Frozen VGG16 backbone (ImageNet weights)
+- Custom head: Flatten → Dense(256) → Dropout(0.3) → Dense(128) → Dropout(0.3) → Dense(1, sigmoid)
+- Converges in 3 epochs — significantly more efficient than training from scratch
 
-**Methodology**
+### Grad-CAM Visualisation
+- Gradient-weighted Class Activation Mapping highlights regions driving each prediction
+- Applied to both models using their respective final convolutional layers
+- Confirms models attend to bone structure rather than image artefacts — critical for clinical trustworthiness
 
-1. **Data Preprocessing**
-   
-Converted images to grayscale for computational efficiency.
+---
 
-Resized images to 224x224x3 pixels using Keras ImageDataGenerator.
+## Repository Structure
 
-Applied augmentation (e.g., scaling, rotation) to improve model generalization.
+```
+bone-fracture-detection/
+├── bone_fracture_detection.ipynb   ← clean notebook with Grad-CAM
+├── train.py                        ← training script (CNN + VGG16)
+├── predict.py                      ← single-image inference with Grad-CAM
+├── requirements.txt
+├── .gitignore
+└── data/
+    └── README.md                   ← dataset download instructions
+```
 
+---
 
-**2.****Custom CNN Model**
+## Tech Stack
 
-Designed with Keras Sequential API for binary classification:
+| Category | Tools |
+|----------|-------|
+| Deep Learning | TensorFlow 2.x, Keras |
+| Computer Vision | OpenCV, Grad-CAM |
+| Data Handling | NumPy, Pandas |
+| Visualisation | Matplotlib, Seaborn |
+| Environment | Google Colab (T4 GPU) |
 
-Three 2D convolutional layers (32 filters, 3x3 kernel, ReLU activation).
+---
 
-Batch normalization for training stability.
+## Setup
 
-Max-pooling (2x2) for down-sampling.
+### 1. Clone the repository
+```bash
+git clone https://github.com/SultanZia/bone-fracture-detection.git
+cd bone-fracture-detection
+```
 
-Dropout (0.3) to reduce overfitting.
+### 2. Install dependencies
+```bash
+pip install -r requirements.txt
+```
 
-Dense layers (256, 128 neurons) and a final sigmoid layer.
+### 3. Download the dataset
+See `data/README.md` for instructions. Update `DATA_DIR` in the notebook config cell.
 
-Compiled with Adam optimizer, binary cross-entropy loss, and early stopping (patience=5)
+### 4. Train models
+```bash
+python train.py --model cnn --epochs 10
+python train.py --model vgg16 --epochs 3
+```
 
-**3.****VGG16 Model**
+### 5. Run inference on a single X-ray
+```bash
+python predict.py --model_path cnn_best_model.keras --image_path xray.jpg
+```
 
-Fine-tuned pre-trained VGG16 (ImageNet weights):
+---
 
-Froze convolutional base, added custom classification layers.
+## Clinical Relevance
 
-Used Adam optimizer, binary cross-entropy loss, and early stopping (patience=3).
+Undiagnosed bone fractures are a significant clinical problem — misdiagnosis leads to delayed or incorrect treatment. This project demonstrates that deep learning models can achieve 99% accuracy on X-ray fracture detection, with Grad-CAM providing the interpretability needed for clinicians to trust and validate model predictions.
 
-Saved best weights with ModelCheckpoint
+---
 
+## Author
 
-**Evaluation**
-
-Metrics: Accuracy, F1-score, specificity, sensitivity, confusion matrix.
-
-Training: 10 epochs (CNN), 3 epochs (VGG16), batch size of 32.
-
-
-**Key Insights**
-
-Accuracy: Both models achieved 92% test accuracy and an F1-score of 0.928.
-
-Efficiency: VGG16 converged in 3 epochs vs. 10 for the custom CNN, showcasing transfer learning’s advantage.
-
-Performance: High specificity and sensitivity confirmed robust fracture detection, supported by confusion matrix analysis.
-
-
-**Results**
-
-Custom CNN: 99% accuracy with a tailored architecture.
-
-VGG16: 99% accuracy in fewer epochs, leveraging pre-trained features.
-
-Visualizations: Accuracy/loss curves and confusion matrices included in the notebook.
-
-
-**Skills Demonstrated**
-
-Deep Learning: Built and fine-tuned CNN and VGG16 models for image classification.
-
-Image Preprocessing: Resized and augmented X-ray images for deep learning.
-
-Model Optimization: Used regularization, early stopping, and transfer learning.
-
-Tools: Python, TensorFlow, Keras, Matplotlib, Seaborn.
-
-
-**Future Enhancements**
-
-Experiment with hybrid CNN-VGG16 architectures.
-
-Incorporate additional imaging modalities (e.g., CT scans).
-
-Explore advanced models like ResNet50 or YOLO.
-
-**Author**
-
-Mohammed Zia Sultan
+**Mohammed Zia Sultan**  
+MSc Data Science, Manchester Metropolitan University (2023–2024)  
+[github.com/SultanZia](https://github.com/SultanZia)
