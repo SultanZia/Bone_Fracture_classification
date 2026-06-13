@@ -1,0 +1,23 @@
+# Bone Fracture Detection — Python Dependencies
+# Python 3.10+
+# Install with: pip install -r requirements.txt
+
+# Deep learning
+tensorflow==2.15.0
+keras==2.15.0
+
+# Computer vision
+opencv-python==4.9.0.80
+Pillow==10.3.0
+
+# Data handling
+numpy==1.26.4
+pandas==2.2.1
+
+# Visualisation
+matplotlib==3.8.4
+seaborn==0.13.2
+
+# Utilities
+tqdm==4.66.4
+scikit-learn==1.4.2
